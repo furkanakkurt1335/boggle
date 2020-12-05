@@ -25,40 +25,53 @@ for i in range(size):
     row.append(' ')
 for i in range(size):
     board.append(row.copy())
+again = board.copy()
 
-# choose board place of word and place it
-for i in range(word_count):
-    while(True):
-        word = words[i]
-        r1 = random.randrange(size)
-        r2 = random.randrange(size)
-        ways = {0: 'r', 1: 'l', 2: 'u', 3: 'd'}
-        if board[r1][r2] == ' ':
-            board[r1][r2] = word[:1]
-            w = word[1:]
-            break
-    for i in w:
+
+def placeWords():  # choose board place of word and place it
+    start = time.perf_counter()
+    for i in range(word_count):
         while(True):
-            way = random.randrange(4)
-            way = ways[way]
-            fr1 = r1
-            fr2 = r2
-            if way == 'r' and r2 != size - 1:
-                r2 += 1
-            elif way == 'l' and r2 != 0:
-                r2 -= 1
-            elif way == 'u' and r1 != 0:
-                r1 -= 1
-            elif way == 'd' and r1 != size - 1:
-                r1 += 1
-            else:
-                continue
+            word = words[i]
+            r1 = random.randrange(size)
+            r2 = random.randrange(size)
+            ways = {0: 'r', 1: 'l', 2: 'u', 3: 'd'}
             if board[r1][r2] == ' ':
-                board[r1][r2] = i
+                board[r1][r2] = word[:1]
+                w = word[1:]
                 break
-            else:
-                r1 = fr1
-                r2 = fr2
+        for i in w:
+            while(True):
+                way = random.randrange(4)
+                way = ways[way]
+                fr1 = r1
+                fr2 = r2
+                if way == 'r' and r2 != size - 1:
+                    r2 += 1
+                elif way == 'l' and r2 != 0:
+                    r2 -= 1
+                elif way == 'u' and r1 != 0:
+                    r1 -= 1
+                elif way == 'd' and r1 != size - 1:
+                    r1 += 1
+                else:
+                    continue
+                if board[r1][r2] == ' ':
+                    board[r1][r2] = i
+                    break
+                else:
+                    r1 = fr1
+                    r2 = fr2
+                if time.perf_counter() - start > 2:
+                    for i in range(size):
+                        for j in range(size):
+                            board[i][j] = ' '
+                    return True
+    return False
+
+
+while(placeWords()):
+    pass
 
 count = 0
 for i in range(len(ls) // 2):
