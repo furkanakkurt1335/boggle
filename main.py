@@ -3,6 +3,9 @@
 import random
 import time
 
+sec = time.perf_counter()
+try_count = 0
+
 # read words
 f = open('sevenLettered-oneWord-List.txt', encoding='utf-8')
 txt = f.read()
@@ -28,7 +31,7 @@ for i in range(size):
 again = board.copy()
 
 
-def placeWords():  # choose board place of word and place it
+def place_words():  # choose board place of word and place it
     start = time.perf_counter()
     for i in range(word_count):
         while(True):
@@ -62,7 +65,7 @@ def placeWords():  # choose board place of word and place it
                 else:
                     r1 = fr1
                     r2 = fr2
-                if time.perf_counter() - start > 2:
+                if time.perf_counter() - start > 0.01:
                     for i in range(size):
                         for j in range(size):
                             board[i][j] = ' '
@@ -70,15 +73,24 @@ def placeWords():  # choose board place of word and place it
     return False
 
 
-while(placeWords()):
+while(place_words()):
+    try_count += 1
     pass
 
+# create bag of letters by frequency
 count = 0
 for i in range(len(ls) // 2):
     for j in range(ls[count + 1]):
         bag.append(ls[count])
     count += 2
 
+# print
+print(time.perf_counter() - sec)
+print(try_count)
+print(' ', end=' ')
+for i in range(size):
+    print(i + 1, end=' ')
+print()
 for i in range(size):
     for j in range(size):
         if board[i][j] == ' ':
