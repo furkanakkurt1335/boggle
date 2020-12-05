@@ -1,10 +1,17 @@
+# currently generates boggle board with 4 seven-lettered words
+
 import random
+import time
+
+# read words
 f = open('sevenLettered-oneWord-List.txt', encoding='utf-8')
 txt = f.read()
 lst = txt.split()
-randNum = random.randrange(len(lst))
-word = lst[randNum]
-
+words = []
+word_count = 4
+for i in range(word_count):
+    randNum = random.randrange(len(lst))
+    words.append(lst[randNum])
 
 # board generation
 ls = ['a', 116, 'e', 94, 'i', 86, 'r', 68, 'n', 68, 'l', 60, 'k', 47, 'd', 46, 'ı', 38, 'o', 36, 'm', 34, 'u', 34, 't', 33, 's', 33,
@@ -13,7 +20,6 @@ bag = []
 board = []
 count = 0
 size = 6
-
 row = []
 for i in range(size):
     row.append(' ')
@@ -21,33 +27,38 @@ for i in range(size):
     board.append(row.copy())
 
 # choose board place of word and place it
-r1 = random.randrange(size)
-r2 = random.randrange(size)
-ways = {0: 'r', 1: 'l', 2: 'u', 3: 'd'}
-board[r1][r2] = word[:1]
-w = word[1:]
-for i in w:
+for i in range(word_count):
     while(True):
-        way = random.randrange(4)
-        way = ways[way]
-        fr1 = r1
-        fr2 = r2
-        if way == 'r' and r2 != size - 1:
-            r2 += 1
-        elif way == 'l' and r2 != 0:
-            r2 -= 1
-        elif way == 'u' and r1 != 0:
-            r1 -= 1
-        elif way == 'd' and r1 != size - 1:
-            r1 += 1
-        else:
-            continue
+        word = words[i]
+        r1 = random.randrange(size)
+        r2 = random.randrange(size)
+        ways = {0: 'r', 1: 'l', 2: 'u', 3: 'd'}
         if board[r1][r2] == ' ':
-            board[r1][r2] = i
+            board[r1][r2] = word[:1]
+            w = word[1:]
             break
-        else:
-            r1 = fr1
-            r2 = fr2
+    for i in w:
+        while(True):
+            way = random.randrange(4)
+            way = ways[way]
+            fr1 = r1
+            fr2 = r2
+            if way == 'r' and r2 != size - 1:
+                r2 += 1
+            elif way == 'l' and r2 != 0:
+                r2 -= 1
+            elif way == 'u' and r1 != 0:
+                r1 -= 1
+            elif way == 'd' and r1 != size - 1:
+                r1 += 1
+            else:
+                continue
+            if board[r1][r2] == ' ':
+                board[r1][r2] = i
+                break
+            else:
+                r1 = fr1
+                r2 = fr2
 
 count = 0
 for i in range(len(ls) // 2):
@@ -67,7 +78,7 @@ for i in range(size):
         print(board[i][j], end=' ')
     print()
 input()
-print(word)
+print(words)
 
 """
 extract 7 lettered words from list
