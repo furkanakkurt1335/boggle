@@ -1,2 +1,2 @@
 # boggle
-Boggle Generation
+Boggle board generation
